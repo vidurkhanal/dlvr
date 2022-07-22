@@ -12,9 +12,9 @@ func main() {
 	repository.Connect(os.Getenv("POSTGRES_URI"))
 	repository.Migrate()
 	r := initRouter()
-	httpPort := os.Getenv("HTTP_PORT")
+	// _httpPort := os.Getenv("HTTP_PORT")
 
-	r.Run(httpPort)
+	r.Run(":8060")
 }
 func initRouter() *gin.Engine {
 	router := gin.Default()
@@ -22,6 +22,7 @@ func initRouter() *gin.Engine {
 	{
 		api.POST("/token", controllers.GenerateToken)
 		api.POST("/user/register", controllers.RegisterUser)
+		api.GET("/user/who-am-i", controllers.WhoAmI)
 		// secured := api.Group("/secured").Use(middlewares.Auth())
 		// {
 		// 	secured.GET("/ping", controllers.Ping)
