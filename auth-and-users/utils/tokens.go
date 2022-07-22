@@ -11,16 +11,14 @@ import (
 var jwtKey = []byte(os.Getenv("JWT_SECRET"))
 
 type JWTClaim struct {
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	ID uint `json:"uid"`
 	jwt.StandardClaims
 }
 
-func GenerateJWT(email string, username string) (tokenString string, err error) {
+func GenerateJWT(ID uint) (tokenString string, err error) {
 	expirationTime := time.Now().Add(72 * time.Hour)
 	claims := &JWTClaim{
-		Email:    email,
-		Username: username,
+		ID: ID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -50,4 +48,29 @@ func ValidateToken(signedToken string) (err error) {
 		return
 	}
 	return
+}
+
+func DecodeToken(token string) (uid uint, err error) {
+	tkn, err := jwt.ParseWithClaims(
+		token,
+		&JWTClaim{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(jwtKey), nil
+		},
+	)
+	if err != nil {
+		return
+	}
+	claims, ok := tkn.Claims.(*JWTClaim)
+	if !ok {
+		err = errors.New("couldn't parse claims")
+		return
+	}
+	if claims.ExpiresAt < time.Now().Local().Unix() {
+		err = errors.New("token expired")
+		return
+	}
+	uid = claims.ID
+	return
+
 }
