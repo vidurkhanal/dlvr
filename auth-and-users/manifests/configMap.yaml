@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dlvr-auth-config
+  namespace: dlvr
+  labels:
+    app: dlvr-auth
+data:
+  GIN_MODE: release
