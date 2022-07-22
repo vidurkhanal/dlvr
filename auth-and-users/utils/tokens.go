@@ -1,13 +1,14 @@
-package auth
+package utils
 
 import (
 	"errors"
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtKey = []byte("supersecretkey")
+var jwtKey = []byte(os.Getenv("JWT_SECRET"))
 
 type JWTClaim struct {
 	Username string `json:"username"`
@@ -16,7 +17,7 @@ type JWTClaim struct {
 }
 
 func GenerateJWT(email string, username string) (tokenString string, err error) {
-	expirationTime := time.Now().Add(1 * time.Hour)
+	expirationTime := time.Now().Add(72 * time.Hour)
 	claims := &JWTClaim{
 		Email:    email,
 		Username: username,

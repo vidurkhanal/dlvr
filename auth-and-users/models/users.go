@@ -21,8 +21,8 @@ func (user *User) HashPassword(password string) error {
 	user.Password = string(bytes)
 	return nil
 }
-func (user *User) CheckPassword(providedPassword string) error {
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(providedPassword))
+func (user *User) CheckPassword(providedPassword string) (err error) {
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(providedPassword))
 	if err != nil {
 		return err
 	}

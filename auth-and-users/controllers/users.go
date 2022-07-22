@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"auth-and-users/models"
-	"auth-and-users/repo"
+	"auth-and-users/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,7 @@ func RegisterUser(context *gin.Context) {
 		context.Abort()
 		return
 	}
-	record := repo.DB.Create(&user)
+	record := repository.DB.Create(&user)
 	if record.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		context.Abort()
