@@ -1,2 +1,4 @@
 .env
 */**/secret.yaml
+node_modules/
+gateway/dist/
