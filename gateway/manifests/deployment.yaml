@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dlvr-gateway
+  namespace: dlvr
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  type: RollingUpdate
+  selector:
+    matchLabels:
+      app: dlvr-gateway
+  template:
+    metadata:
+      labels:
+        app: dlvr-gateway
+    spec:
+      containers:
+      - name: dlvr-gateway
+        image: vidurkhanal/dlvr-gateway
+        envFrom:
+          - configMapRef:
+              name: dlvr-gateway-config
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5050

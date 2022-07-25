@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  dlvr-gateway
+  namespace: dlvr
+
+spec:
+  selector:
+    app:  dlvr-gateway
+  type:  ClusterIP 
+  ports:
+  - port:  5050
+    targetPort:  5050
+    protocol: TCP

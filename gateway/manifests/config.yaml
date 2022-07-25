@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dlvr-gateway-config
+  namespace: dlvr
+
+  labels:
+    app: dlvr-gateway
+data:
+  AUTH_SVC_ADDRESS: "dlvr-auth"
