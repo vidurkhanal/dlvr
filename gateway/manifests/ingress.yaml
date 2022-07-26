@@ -3,18 +3,21 @@ kind: Ingress
 metadata:
   name: dlv-ingress
   namespace: dlvr
-
+  annotations:
+    "nginx.ingress.kubernetes.io/proxy-body-size":  "0"
+    "nginx.ingress.kubernetes.io/proxy-read-timeout":  "600"
+    "nginx.ingress.kubernetes.io/proxy-send-timeout":  "600"
   labels:
     name: dlv-ingress
 spec:
   rules:
-  - host: <Host>
+  - host: api.dlvr.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: <Service>
+            name: dlvr-gateway
             port: 
-              number: <Port>
+              number: 5050
